@@ -1,4 +1,3 @@
-require_relative 'minetile'
 require 'byebug'
 
 class Board
@@ -17,19 +16,19 @@ class Board
   end
 
   def render
-    row_output = "   |"
+    row_output = "    |"
     (1..grid.length).each do |i|
-      row_output << " #{i} |"
+      row_output += i < 10 ? " #{i}  |" : " #{i} |"
     end
     puts row_output
-    puts "----"*(grid.length+1)
+    puts "-----"*(grid.length+1)
     grid.each_with_index do |row, i|
-      row_output = " #{i+1} |"
+      row_output = i < 9 ? " #{i+1}  |" : " #{i+1} |"
       row.each do |tile|
-        row_output += tile.hidden ? "   |" : " #{tile.value} |"
+        row_output += tile.hidden ? "    |" : " #{tile.value}  |"
       end
       puts row_output
-      puts "----"*(grid.length+1)
+      puts "-----"*(grid.length+1)
     end
     nil
   end
