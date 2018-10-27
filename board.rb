@@ -1,12 +1,14 @@
 require_relative 'minetile'
+require 'byebug'
 
 class Board
 
   attr_reader :grid
 
   def initialize(bombs=10, grid=Array.new(9){Array.new(9)})
+    # debugger
     @grid = grid
-    place_random_bombs(bombs)
+    populate(bombs)
   end
 
   def [](pos)
@@ -29,16 +31,34 @@ class Board
 
   private
 
-  # attr_reader :grid
+  attr_reader :grid
+  def populate(bombs)
+    empty_tiles = place_random_bombs(bombs)
+    empty_tiles.each do |pos|
+      # look at all valid neighbors, add bombs, set self to bomb number
+      neighbors = get_valid_neighbors(pos)
+    end
+  end
+
+  def get_valid_neighbors(pos)
+    neighbors = []
+    row, col = pos
+    (-1..1).each do |i|
+      (-1..1).each do |j|
+        neighbors << [row+i, col+j]
+      end
+    end
+    neighbors.select {|r,c| r.between?(0,grid.length-1) &&
+                            c.between?(0,grid.length-1)}
+  end
 
   def place_random_bombs(amount)
     empty_tiles = get_board_pos_with_val(nil)
     random_positions = empty_tiles.shuffle[0...amount]
-    leftovers = empty_tiles - random_positions
     random_positions.each do |pos|
       self[pos] = 0
     end
-    nil
+    empty_tiles - random_positions
   end
 
   def get_board_pos_with_val(value=nil)
