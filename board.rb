@@ -19,10 +19,16 @@ class Board
   end
 
   def reveal(pos)
+    # queue = [pos]
+    # until queue.empty?
+    #   current_pos = queue.shift
+    #   self[pos].reveal
+    # end
     self[pos].reveal
   end
 
   def won?
+
   end
 
   def render

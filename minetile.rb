@@ -4,12 +4,12 @@ class MineTile
 
   def initialize(value)
     @value = value
-    @hidden = false
+    @hidden = true
     @flagged = false
   end
 
   def flag
-    @flagged = true
+    @flagged = true if hidden
   end
 
   def unflag
