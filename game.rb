@@ -1,5 +1,6 @@
 require_relative 'board.rb'
 require_relative 'minetile.rb'
+require 'byebug'
 
 class Game
 
@@ -8,16 +9,37 @@ class Game
     @size = size
   end
 
+
   def play
+    # debugger
     puts %x{clear}
     board.render
-    get_user_input("Which position do you want to reveal?", get_valid_poisitions)
+    pos = Game.get_user_input("Which position?", get_valid_positions)
+    p pos
   end
 
-  # private
+  private
   attr_reader :board, :size
 
-  def get_valid_poisitions
+  def self.parse_ans(answer)
+    answer.split(",").map{|char| Integer(char)}
+  end
+
+  def self.get_user_input(prompt, valid_answers)
+    answer = ""
+    begin
+      puts prompt
+      answer = gets.chomp.strip
+      answer = Game.parse_ans(answer) unless answer.length == 1
+      raise unless valid_answers.include?(answer)
+    rescue RuntimeError => x
+      puts "#{ex.message}"
+      retry
+    end
+    answer
+  end
+
+  def get_valid_positions
     valid_positions = []
     (0...size).each do |i|
       (0...size).each do |j|
@@ -27,23 +49,12 @@ class Game
     end
     valid_positions
   end
-end
 
-def get_user_input(prompt, valid_answers)
-  answer = ""
-  begin
-    puts prompt
-    answer = gets.chomp.strip
-    raise unless valid_answers.include?(answer)
-  rescue
-    retry
-  end
-  answer
 end
 
 if __FILE__ == $PROGRAM_NAME
   puts "Let's play Minesweeper!"
-  ans = get_user_input("Easy(e) or Hard(h)?", ["e", "h"])
+  ans = Game.get_user_input("Easy(e) or Hard(h)?", ["e", "h"])
   case ans
   when "e"
     game = Game.new(10,9)
