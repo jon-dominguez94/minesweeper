@@ -25,6 +25,10 @@ class Board
 
   end
 
+  def inspect
+    "\#<#{self.class}:#{self.object_id}>"
+  end
+
   private
 
   attr_reader :grid
