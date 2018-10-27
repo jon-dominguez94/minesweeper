@@ -4,7 +4,7 @@ class MineTile
 
   def initialize(value)
     @value = value
-    @hidden = true
+    @hidden = false
   end
 
   def reveal

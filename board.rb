@@ -5,20 +5,10 @@ class Board
 
   # attr_reader :grid
 
-  def initialize(bombs=10, grid=Array.new(9){Array.new(9)})
+  def initialize(bombs=10, size=9)
     # debugger
-    @grid = grid
+    @grid = Array.new(size){Array.new(size)}
     populate(bombs)
-  end
-
-  def [](pos)
-    row,col = pos
-    grid[row][col]
-  end
-
-  def []=(pos, value)
-    row,col = pos
-    grid[row][col] = MineTile.new(value)
   end
 
   def reveal(pos)
@@ -47,6 +37,17 @@ class Board
   private
 
   attr_reader :grid
+
+  def [](pos)
+    row,col = pos
+    grid[row][col]
+  end
+
+  def []=(pos, value)
+    row,col = pos
+    grid[row][col] = MineTile.new(value)
+  end
+
   def populate(bombs)
     empty_tiles = place_random_bombs(bombs)
     empty_tiles.each do |pos|
@@ -80,7 +81,7 @@ class Board
 
   def place_random_bombs(amount)
     empty_tiles = get_board_pos_with_val(nil)
-    random_positions = empty_tiles.shuffle[0...amount]
+    random_positions = empty_tiles.shuffle.shuffle.shuffle[0...amount]
     random_positions.each do |pos|
       self[pos] = 0
     end
