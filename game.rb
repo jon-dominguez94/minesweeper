@@ -5,15 +5,28 @@ class Game
 
   def initialize(bombs=10,size=9)
     @board = Board.new(bombs,size)
+    @size = size
   end
 
   def play
+    puts %x{clear}
     board.render
+    get_user_input("Which position do you want to reveal?", get_valid_poisitions)
   end
 
-  private
-  attr_reader :board
+  # private
+  attr_reader :board, :size
 
+  def get_valid_poisitions
+    valid_positions = []
+    (0...size).each do |i|
+      (0...size).each do |j|
+        pos = [i,j]
+        valid_positions << pos
+      end
+    end
+    valid_positions
+  end
 end
 
 def get_user_input(prompt, valid_answers)
