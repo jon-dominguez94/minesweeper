@@ -20,6 +20,20 @@ class Board
 
   end
 
+  def render
+    place_random_bombs(10)
+  end
+
+  private
+
+  def place_random_bombs(amount)
+    empty_tiles = get_board_pos_with_val(nil)
+    random_positions = empty_tiles.shuffle[0...amount]
+    random_positions.each do |pos|
+      self[pos] = '*'
+    end
+  end
+
   def get_board_pos_with_val(value=nil)
     size = grid.length
     matching_positions = []
@@ -31,22 +45,5 @@ class Board
     end
     matching_positions
   end
-  private
-
-
-  def place_random_bombs(amount)
-  end
-  #
-  # def get_board_pos_with_val(value=nil)
-  #   size = grid.length
-  #   matching_positions = []
-  #   (0...size).each do |i|
-  #     (0...size).ecah do |j|
-  #       pos = [i,j]
-  #       matching_positions << pos if self[pos] == value
-  #     end
-  #   end
-  #   matching_positions
-  # end
 
 end
