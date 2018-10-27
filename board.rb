@@ -10,9 +10,19 @@ class Board
     populate(bombs)
   end
 
+  def flag(pos)
+      self[pos].flag
+  end
+
+  def unflag(pos)
+    self[pos].unflag
+  end
+
   def reveal(pos)
     self[pos].reveal
-    render
+  end
+
+  def won?
   end
 
   def render
@@ -25,7 +35,13 @@ class Board
     grid.each_with_index do |row, i|
       row_output = i < 9 ? " #{i+1}  |" : " #{i+1} |"
       row.each do |tile|
-        row_output += tile.hidden ? "    |" : " #{tile.value}  |"
+        if tile.flagged
+          row_output += " ?  |"
+        elsif tile.hidden
+          row_output += "    |"
+        else
+          row_output += " #{tile.value}  |"
+        end
       end
       puts row_output
       puts "-----"*(grid.length+1)

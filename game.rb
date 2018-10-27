@@ -10,18 +10,27 @@ class Game
   end
 
   def play
-    puts %x{clear}
-    board.render
-    pos = Game.get_user_input("Which position? ex: 1,5", get_valid_positions)
-    action = Game.get_user_input("Reveal(r) or Flag(f)", ["r", "f"])
-    make_move(pos, action)
+    loop do
+      puts %x{clear}
+      board.render
+      pos = Game.get_user_input("Which position? ex: 1,5", get_valid_positions)
+      action = Game.get_user_input("Reveal(r), Flag(f), or Unflag(u)", ["r", "f", "u"])
+      make_move(pos, action)
+    end
   end
 
   private
   attr_reader :board, :size
 
   def make_move(pos, action)
-
+    case action
+    when "f"
+      board.flag(pos)
+    when "u"
+      board.unflag(pos)
+    when "r"
+      board.reveal(pos)
+    end
   end
 
   def self.parse_ans(answer)
@@ -36,6 +45,7 @@ class Game
       answer = Game.parse_ans(answer) unless answer.length == 1
       raise unless valid_answers.include?(answer)
     rescue
+      puts "Invalid response"
       retry
     end
     answer
