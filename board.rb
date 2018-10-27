@@ -1,9 +1,10 @@
 class Board
 
 
-  attr_reader :grid
-  def initialize(grid=Array.new(9){Array.new(9)})
+  # attr_reader :grid
+  def initialize(bombs=10, grid=Array.new(9){Array.new(9)})
     @grid = grid
+    place_random_bombs(bombs)
   end
 
   def [](pos)
@@ -21,10 +22,12 @@ class Board
   end
 
   def render
-    place_random_bombs(10)
+
   end
 
   private
+
+  attr_reader :grid
 
   def place_random_bombs(amount)
     empty_tiles = get_board_pos_with_val(nil)
@@ -32,6 +35,7 @@ class Board
     random_positions.each do |pos|
       self[pos] = '*'
     end
+    nil
   end
 
   def get_board_pos_with_val(value=nil)
