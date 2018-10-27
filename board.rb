@@ -3,7 +3,7 @@ require 'byebug'
 
 class Board
 
-  attr_reader :grid
+  # attr_reader :grid
 
   def initialize(bombs=10, grid=Array.new(9){Array.new(9)})
     # debugger
@@ -22,22 +22,37 @@ class Board
   end
 
   def reveal(pos)
-
+    self[pos].reveal
+    render
   end
 
   def render
-
+    row_output = "   |"
+    (1..grid.length).each do |i|
+      row_output << " #{i} |"
+    end
+    puts row_output
+    puts "----"*(grid.length+1)
+    grid.each_with_index do |row, i|
+      row_output = " #{i+1} |"
+      row.each do |tile|
+        row_output += tile.hidden ? "   |" : " #{tile.value} |"
+      end
+      puts row_output
+      puts "----"*(grid.length+1)
+    end
+    nil
   end
 
-  # private
+  private
 
-  # attr_reader :grid
+  attr_reader :grid
   def populate(bombs)
     empty_tiles = place_random_bombs(bombs)
     empty_tiles.each do |pos|
-      # look at all valid neighbors, add bombs, set self to bomb number
       neighbors = get_valid_neighbors(pos)
       bomb_count = get_bomb_count(neighbors)
+      self[pos] = bomb_count
     end
   end
 
