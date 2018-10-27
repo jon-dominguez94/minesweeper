@@ -4,7 +4,7 @@ class MineTile
 
   def initialize(value)
     @value = value
-    @hidden = true
+    @hidden = false
     @flagged = false
   end
 
@@ -18,6 +18,7 @@ class MineTile
 
   def reveal
     @hidden = false unless flagged
+    value
   end
 
   def inspect

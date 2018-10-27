@@ -40,7 +40,8 @@ class Board
         elsif tile.hidden
           row_output += "    |"
         else
-          row_output += " #{tile.value}  |"
+          output = tile.value == 0 ? " " : tile.value
+          row_output += " #{output}  |"
         end
       end
       puts row_output
@@ -76,7 +77,7 @@ class Board
     count = 0
     neighbors.each do |pos|
       next if self[pos] == nil
-      count += 1 if self[pos].value == 0
+      count += 1 if self[pos].value == :*
     end
     count
   end
@@ -98,7 +99,7 @@ class Board
     empty_tiles = get_board_pos_with_val(nil)
     random_positions = empty_tiles.shuffle.shuffle.shuffle[0...amount]
     random_positions.each do |pos|
-      self[pos] = 0
+      self[pos] = :*
     end
     empty_tiles - random_positions
   end
