@@ -10,15 +10,19 @@ class Game
   end
 
   def play
-    # debugger
     puts %x{clear}
     board.render
-    pos = Game.get_user_input("Which position? ex: 0,5", get_valid_positions)
+    pos = Game.get_user_input("Which position? ex: 1,5", get_valid_positions)
     action = Game.get_user_input("Reveal(r) or Flag(f)", ["r", "f"])
+    make_move(pos, action)
   end
 
   private
   attr_reader :board, :size
+
+  def make_move(pos, action)
+
+  end
 
   def self.parse_ans(answer)
     answer.split(",").map{|char| Integer(char) - 1}
