@@ -9,20 +9,19 @@ class Game
     @size = size
   end
 
-
   def play
     # debugger
     puts %x{clear}
     board.render
-    pos = Game.get_user_input("Which position?", get_valid_positions)
-    p pos
+    pos = Game.get_user_input("Which position? ex: 0,5", get_valid_positions)
+    action = Game.get_user_input("Reveal(r) or Flag(f)", ["r", "f"])
   end
 
   private
   attr_reader :board, :size
 
   def self.parse_ans(answer)
-    answer.split(",").map{|char| Integer(char)}
+    answer.split(",").map{|char| Integer(char) - 1}
   end
 
   def self.get_user_input(prompt, valid_answers)
@@ -32,8 +31,7 @@ class Game
       answer = gets.chomp.strip
       answer = Game.parse_ans(answer) unless answer.length == 1
       raise unless valid_answers.include?(answer)
-    rescue RuntimeError => x
-      puts "#{ex.message}"
+    rescue
       retry
     end
     answer
