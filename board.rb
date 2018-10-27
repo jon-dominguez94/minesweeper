@@ -29,15 +29,25 @@ class Board
 
   end
 
-  private
+  # private
 
-  attr_reader :grid
+  # attr_reader :grid
   def populate(bombs)
     empty_tiles = place_random_bombs(bombs)
     empty_tiles.each do |pos|
       # look at all valid neighbors, add bombs, set self to bomb number
       neighbors = get_valid_neighbors(pos)
+      bomb_count = get_bomb_count(neighbors)
     end
+  end
+
+  def get_bomb_count(neighbors)
+    count = 0
+    neighbors.each do |pos|
+      next if self[pos] == nil
+      count += 1 if self[pos].value == 0
+    end
+    count
   end
 
   def get_valid_neighbors(pos)
@@ -49,7 +59,8 @@ class Board
       end
     end
     neighbors.select {|r,c| r.between?(0,grid.length-1) &&
-                            c.between?(0,grid.length-1)}
+                            c.between?(0,grid.length-1) &&
+                            [r,c] != pos}
   end
 
   def place_random_bombs(amount)

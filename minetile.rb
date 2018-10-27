@@ -1,5 +1,7 @@
 class MineTile
 
+  attr_reader :value
+
   def initialize(value)
     @value = value
   end
@@ -7,7 +9,7 @@ class MineTile
   def inspect
     "#{self.value}"
   end
+  
   private
-  attr_reader :value
 
 end
