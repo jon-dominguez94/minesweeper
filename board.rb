@@ -1,7 +1,9 @@
+require_relative 'minetile'
+
 class Board
 
+  attr_reader :grid
 
-  # attr_reader :grid
   def initialize(bombs=10, grid=Array.new(9){Array.new(9)})
     @grid = grid
     place_random_bombs(bombs)
@@ -14,7 +16,7 @@ class Board
 
   def []=(pos, value)
     row,col = pos
-    grid[row][col] = value
+    grid[row][col] = MineTile.new(value)
   end
 
   def reveal(pos)
@@ -25,19 +27,16 @@ class Board
 
   end
 
-  def inspect
-    "\#<#{self.class}:#{self.object_id}>"
-  end
-
   private
 
-  attr_reader :grid
+  # attr_reader :grid
 
   def place_random_bombs(amount)
     empty_tiles = get_board_pos_with_val(nil)
     random_positions = empty_tiles.shuffle[0...amount]
+    leftovers = empty_tiles - random_positions
     random_positions.each do |pos|
-      self[pos] = '*'
+      self[pos] = 0
     end
     nil
   end
@@ -54,4 +53,7 @@ class Board
     matching_positions
   end
 
+  def inspect
+    "\#<#{self.class}:#{self.object_id}>"
+  end
 end
