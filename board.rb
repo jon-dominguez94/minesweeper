@@ -24,9 +24,9 @@ class Board
       current_pos = queue.shift
       self[current_pos].reveal
       revealed_pos << current_pos
-      neighbors = get_valid_neighbors(pos)
-      unless neighbors.any? {|n_pos| self[n_pos].value == :*}
-        # (queue += neighbors - revealed_pos).uniq!
+      neighbors = get_valid_neighbors(current_pos)
+      unless neighbors.any? {|n_pos| bomb_pos.include?(n_pos)}
+        (queue += neighbors - revealed_pos).uniq!
       end
     end
   end
@@ -36,7 +36,7 @@ class Board
   end
 
   def won?
-    revealed_pos == all_pos - bomb_pos
+    (revealed_pos | bomb_pos).sort == all_pos.sort
   end
 
   def render
@@ -57,7 +57,7 @@ class Board
           output =  ""
           case tile.value
           when 0
-            output = " "
+            output = "-".blue
           when :*
             output = tile.value.to_s.red
           else

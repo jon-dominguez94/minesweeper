@@ -18,8 +18,9 @@ class Game
       action = Game.get_user_input("Reveal(r), Flag(f), or Unflag(u)", ["r", "f", "u"])
       make_move(pos, action)
     end
+    puts %x{clear}
     board.render
-    puts board.lost? ? "You lose!" : "winner!"
+    puts board.lost? ? "You lose!" : "You Win!"
   end
 
   private
