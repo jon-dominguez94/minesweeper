@@ -39,6 +39,15 @@ class Board
     (revealed_pos | bomb_pos).sort == all_pos.sort
   end
 
+  def display
+    render
+  end
+
+
+  private
+
+  attr_reader :grid, :revealed_pos, :all_pos, :bomb_pos
+
   def render
     row_output = "    |"
     (1..grid.length).each do |i|
@@ -50,18 +59,23 @@ class Board
       row_output = i < 9 ? " #{i+1}  |" : " #{i+1} |"
       row.each do |tile|
         if tile.flagged
-          row_output += " ?  |"
+          output = "?".light_red
+          row_output += " #{output}  |"
         elsif tile.hidden
           row_output += "    |"
         else
           output =  ""
           case tile.value
           when 0
-            output = "-".blue
+            output = "-".light_yellow
           when :*
-            output = tile.value.to_s.red
+            output = tile.value.to_s.light_red
+          when 1
+            output = "1".light_cyan
+          when 2
+            output = "2".light_magenta
           else
-            output = tile.value.to_s.blue
+            output = tile.value.to_s.light_blue
           end
           row_output += " #{output}  |"
         end
@@ -71,10 +85,6 @@ class Board
     end
     nil
   end
-
-  private
-
-  attr_reader :grid, :revealed_pos, :all_pos, :bomb_pos
 
   def [](pos)
     row,col = pos

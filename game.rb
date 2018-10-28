@@ -13,13 +13,13 @@ class Game
   def play
     until game_over? do
       puts %x{clear}
-      board.render
+      board.display
       pos = Game.get_user_input("Which position? ex: 1,5", get_valid_positions)
       action = Game.get_user_input("Reveal(r), Flag(f), or Unflag(u)", ["r", "f", "u"])
       make_move(pos, action)
     end
     puts %x{clear}
-    board.render
+    board.display
     puts board.lost? ? "You lose!" : "You Win!"
   end
 
