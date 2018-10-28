@@ -1,5 +1,6 @@
 require_relative 'board.rb'
 require_relative 'minetile.rb'
+require 'colorize'
 require 'byebug'
 
 class Game
@@ -10,13 +11,25 @@ class Game
   end
 
   def play
-    loop do
+    until game_over? do
       puts %x{clear}
       board.render
+      debugger
       pos = Game.get_user_input("Which position? ex: 1,5", get_valid_positions)
       action = Game.get_user_input("Reveal(r), Flag(f), or Unflag(u)", ["r", "f", "u"])
       make_move(pos, action)
     end
+    board.render
+    if board.lost?
+      puts "loser!"
+    else
+      puts "winner!"
+    end
+
+  end
+
+  def game_over?
+    board.lost? || board.won?
   end
 
   private

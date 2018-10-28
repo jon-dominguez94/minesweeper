@@ -7,7 +7,9 @@ class Board
   def initialize(bombs=10, size=9)
     # debugger
     @grid = Array.new(size){Array.new(size)}
+    @all_pos = get_all_board_pos
     populate(bombs)
+    @revealed_pos = []
   end
 
   def flag(pos)
@@ -19,19 +21,25 @@ class Board
   end
 
   def reveal(pos)
+    # debugger
     queue = [pos]
     until queue.empty?
       current_pos = queue.shift
       self[current_pos].reveal
+      revealed_pos << current_pos
+      neighbors = get_valid_neighbors(pos)
+      unless neighbors.any? {|n_pos| self[n_pos].value == :*}
+        # (queue += neighbors - revealed_pos).uniq!
+      end
     end
   end
 
   def lost?
-
+    revealed_pos.any? {|pos| self[pos].value == :*}
   end
 
   def won?
-
+    revealed_pos == all_pos - bomb_pos
   end
 
   def render
@@ -49,7 +57,15 @@ class Board
         elsif tile.hidden
           row_output += "    |"
         else
-          output = tile.value == 0 ? " " : tile.value
+          output =  ""
+          case tile.value
+          when 0
+            output = " "
+          when :*
+            output = tile.value.to_s.red
+          else
+            output = tile.value.to_s.blue
+          end
           row_output += " #{output}  |"
         end
       end
@@ -59,9 +75,9 @@ class Board
     nil
   end
 
-  private
+  # private
 
-  attr_reader :grid
+  attr_reader :grid, :revealed_pos, :all_pos, :bomb_pos
 
   def [](pos)
     row,col = pos
@@ -105,16 +121,11 @@ class Board
   end
 
   def place_random_bombs(amount)
-    empty_tiles = get_empty_pos
-    random_positions = empty_tiles.shuffle.shuffle.shuffle[0...amount]
-    random_positions.each do |pos|
+    @bomb_pos = all_pos.shuffle.shuffle.shuffle[0...amount]
+    bomb_pos.each do |pos|
       self[pos] = :*
     end
-    empty_tiles - random_positions
-  end
-
-  def get_empty_pos
-    get_all_board_pos.select {|pos| !self[pos]}
+     all_pos - bomb_pos
   end
 
   def get_all_board_pos
