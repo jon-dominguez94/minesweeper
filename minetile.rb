@@ -21,10 +21,10 @@ class MineTile
     value
   end
 
+  private
+  
   def inspect
     "#{self.value}"
   end
-
-  private
 
 end

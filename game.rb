@@ -14,26 +14,20 @@ class Game
     until game_over? do
       puts %x{clear}
       board.render
-      debugger
       pos = Game.get_user_input("Which position? ex: 1,5", get_valid_positions)
       action = Game.get_user_input("Reveal(r), Flag(f), or Unflag(u)", ["r", "f", "u"])
       make_move(pos, action)
     end
     board.render
-    if board.lost?
-      puts "loser!"
-    else
-      puts "winner!"
-    end
-
-  end
-
-  def game_over?
-    board.lost? || board.won?
+    puts board.lost? ? "You lose!" : "winner!"
   end
 
   private
   attr_reader :board, :size
+
+  def game_over?
+    board.lost? || board.won?
+  end
 
   def make_move(pos, action)
     case action

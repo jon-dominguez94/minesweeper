@@ -2,10 +2,7 @@ require 'byebug'
 
 class Board
 
-  # attr_reader :grid
-
   def initialize(bombs=10, size=9)
-    # debugger
     @grid = Array.new(size){Array.new(size)}
     @all_pos = get_all_board_pos
     populate(bombs)
@@ -75,7 +72,7 @@ class Board
     nil
   end
 
-  # private
+  private
 
   attr_reader :grid, :revealed_pos, :all_pos, :bomb_pos
 
