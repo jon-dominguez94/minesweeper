@@ -19,8 +19,8 @@ class Game
       make_move(pos, action)
     end
     puts %x{clear}
-    board.display
     puts board.lost? ? "You lose!" : "You Win!"
+    board.display
   end
 
   private

@@ -32,7 +32,12 @@ class Board
   end
 
   def lost?
-    revealed_pos.any? {|pos| self[pos].value == :*}
+    # if revealed_pos.any? {|pos| self[pos].value == :*}
+    unless (revealed_pos & bomb_pos).empty?
+      bomb_pos.each {|pos| self[pos].reveal}
+      return true
+    end
+    false
   end
 
   def won?
