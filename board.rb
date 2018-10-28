@@ -19,12 +19,15 @@ class Board
   end
 
   def reveal(pos)
-    # queue = [pos]
-    # until queue.empty?
-    #   current_pos = queue.shift
-    #   self[pos].reveal
-    # end
-    self[pos].reveal
+    queue = [pos]
+    until queue.empty?
+      current_pos = queue.shift
+      self[current_pos].reveal
+    end
+  end
+
+  def lost?
+
   end
 
   def won?
@@ -102,7 +105,7 @@ class Board
   end
 
   def place_random_bombs(amount)
-    empty_tiles = get_board_pos_with_val(nil)
+    empty_tiles = get_empty_pos
     random_positions = empty_tiles.shuffle.shuffle.shuffle[0...amount]
     random_positions.each do |pos|
       self[pos] = :*
@@ -110,16 +113,20 @@ class Board
     empty_tiles - random_positions
   end
 
-  def get_board_pos_with_val(value=nil)
+  def get_empty_pos
+    get_all_board_pos.select {|pos| !self[pos]}
+  end
+
+  def get_all_board_pos
     size = grid.length
-    matching_positions = []
+    positions = []
     (0...size).each do |i|
       (0...size).each do |j|
         pos = [i,j]
-        matching_positions << pos if self[pos] == value
+        positions << pos
       end
     end
-    matching_positions
+    positions
   end
 
   def inspect
